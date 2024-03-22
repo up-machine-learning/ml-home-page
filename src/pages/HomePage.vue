@@ -65,6 +65,7 @@
               maximizable
               modal
               header="Choose Location"
+              dismissableMask
               @maximize="isFullScreen = true"
               @unmaximize="isFullScreen = false"
               :style="{ width: '50rem' }"
@@ -92,13 +93,31 @@
                   ></l-marker>
                 </l-map>
               </div>
+              <div class="d-flex justify-content-end gap-2 mt-4">
+                <Button
+                  type="button"
+                  label="Cancel"
+                  severity="secondary"
+                  class="rounded"
+                  @click="visible = false"
+                ></Button>
+                <Button
+                  type="button"
+                  label="Save"
+                  class="rounded"
+                  @click="onConfirmLocation"
+                ></Button>
+              </div>
             </Dialog>
           </div>
 
           <div class="w-100 text-center">
-            <button class="btn btn-primary w-50" @click="onSearch"
-              >Search</button
-            >
+            <Button
+              label="Search"
+              type="button"
+              class="rounded w-50"
+              @click="onSearch"
+            ></Button>
           </div>
         </div>
       </div>
@@ -112,6 +131,7 @@ import { https } from "@/utils/axios.helpter";
 import { LMap, LMarker, LTileLayer } from "@vue-leaflet/vue-leaflet";
 import dayjs from "dayjs";
 import "leaflet/dist/leaflet.css";
+import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
@@ -124,13 +144,21 @@ const zoom = 13;
 const map = ref(null);
 const visible = ref(false);
 const isFullScreen = ref(false);
+const tempLocator = reactive({
+  latitude: "",
+  longitude: "",
+});
 
 const locationUpdated = (latlng: any) => {
-  searchForm.latitude = latlng.lat;
-  searchForm.longitude = latlng.lng;
+  tempLocator.latitude = latlng.lat;
+  tempLocator.longitude = latlng.lng;
 };
 
-const today = dayjs();
+const onConfirmLocation = () => {
+  searchForm.latitude = tempLocator.latitude;
+  searchForm.longitude = tempLocator.longitude;
+  visible.value = false;
+};
 
 const searchForm = reactive({
   dateRange: [],

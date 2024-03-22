@@ -31,7 +31,7 @@ https.interceptors.response.use(
   },
   async (error: any) => {
     /* eslint-disable */
-    const statusCode = error.response.status;
+    const statusCode = error?.response?.status;
     if (statusCode === 401) {
       await https
         .get("/refresh-token")
@@ -46,6 +46,8 @@ https.interceptors.response.use(
           };
         });
       return axios.request(error.config);
+    } else {
+      return Promise.reject(error);
     }
     /* eslint-enable */
   }

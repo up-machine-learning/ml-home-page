@@ -2,23 +2,25 @@
   <section id="search-result">
     <div class="container">
       <div class="row my-4">
-        <div class="col d-flex align-items-center">
-          <span class="p-2 me-2"
-            ><Button
-              icon="pi pi-chevron-left"
-              class="p-button-text p-button-lg p-button-rounded p-button-secondary"
-              text
-              rounded
-              aria-label="Back"
-              @click="$router.go(-1)"
-          /></span>
-          <h2>Destination</h2>
-          <div class="d-flex mb-3 ms-auto">
+        <div class="col d-md-flex align-items-center">
+          <div class="d-flex align-items-center">
+            <span class="p-2 me-2"
+              ><Button
+                icon="pi pi-chevron-left"
+                class="p-button-text p-button-lg p-button-rounded p-button-secondary"
+                text
+                rounded
+                aria-label="Back"
+                @click="$router.go(-1)"
+            /></span>
+            <h2>Destination</h2>
+          </div>
+          <div class="d-md-flex mb-3 ms-auto">
             <div class="form-group w-100">
               <label for="">Name:</label>
               <InputText v-model="searchForm.name" class="w-100" />
             </div>
-            <div class="m-2 mt-auto"></div>
+            <div class="d-none d-md-block m-2 mt-auto"></div>
             <div class="form-group w-100">
               <label for="">Type:</label>
               <br />
@@ -28,6 +30,7 @@
                 :options="typeOptions"
                 optionLabel="name"
                 placeholder="Select a type"
+                class="w-100"
                 style="width: 240px"
               />
             </div>
@@ -44,17 +47,11 @@
         </div>
       </div>
 
-      <div
-        v-if="!searchResults || Object.keys(searchResults).length === 0"
-        class="d-flex justify-content-center"
-      >
+      <div v-if="isLoading" class="d-flex justify-content-center">
         <ProgressSpinner />
       </div>
 
-      <div
-        class="my-4"
-        v-if="searchResults && Object.keys(searchResults).length"
-      >
+      <div class="my-4" v-if="!isLoading">
         <div class="row">
           <div
             class="col-12 col-md-6"
@@ -105,6 +102,13 @@
           </div>
         </div>
       </div>
+
+      <Paginator
+        :rows="10"
+        :totalRecords="120"
+        :rowsPerPageOptions="[10, 20, 30]"
+        @page="onPage($event)"
+      ></Paginator>
 
       <Dialog
         v-if="selectedItem"
@@ -157,35 +161,6 @@
               :showIndicators="false"
             >
               <template #item="slotProps">
-                <div class="position-relative" style="width: fit-content"
-                  >Sentiment Result :
-
-                  <Tag
-                    v-tooltip.top="{
-                      value: slotProps.data.predictedSentiment,
-                      pt: {
-                        arrow: {
-                          style: {
-                            borderTopColor: 'white',
-                          },
-                        },
-                        text: {
-                          style: {
-                            backgroundColor: 'var(--secondary-color)',
-                            color: 'var(--primary-color)',
-                          },
-                        },
-                      },
-                    }"
-                    :value="
-                      predictSentiment(slotProps.data.predictedSentiment).value
-                    "
-                    :severity="
-                      predictSentiment(slotProps.data.predictedSentiment)
-                        .severity
-                    "
-                  ></Tag
-                ></div>
                 <div
                   class="d-flex flex-column align-items-center justify-content-center"
                 >
@@ -249,6 +224,7 @@ import Dialog from "primevue/dialog";
 import Divider from "primevue/divider";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
+import Paginator from "primevue/paginator";
 import ProgressSpinner from "primevue/progressspinner";
 import Rating from "primevue/rating";
 import Tag from "primevue/tag";
@@ -258,6 +234,13 @@ const preview = ref(false);
 const searchResults = ref<IDestination[]>([]);
 const searchStore = useSearchStore();
 const selectedItem = ref<IReview>();
+const isLoading = ref(true);
+const paginator = ref({
+  page: 1,
+  first: 0,
+  rows: 10,
+  pageCount: 0,
+});
 const searchForm = ref({
   name: "",
   type: "all",
@@ -271,14 +254,28 @@ onMounted(async () => {
   await fetchData();
 });
 
+const onPage = async (event: any) => {
+  await fetchData({ page: event.page + 1, limit: event.rows });
+};
+
 const fetchData = async (query?: any) => {
+  isLoading.value = true;
   searchResults.value = await searchStore
     .findDestination({
       page: 1,
       limit: 10,
       ...query,
     })
-    .then((res) => res.data);
+    .then(
+      (res) => {
+        paginator.value.pageCount = res.data.totalRecord;
+        isLoading.value = false;
+        return res.data;
+      },
+      () => {
+        isLoading.value = false;
+      }
+    );
 };
 const onSearch = async () => {
   if (searchForm.value && Object.keys(searchForm.value)?.length) {
