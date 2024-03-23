@@ -268,7 +268,7 @@ const fetchData = async (query?: any) => {
     })
     .then(
       (res) => {
-        paginator.value.pageCount = res.data.totalRecord;
+        paginator.value.pageCount = res.totalRecord;
         isLoading.value = false;
         return res.data;
       },
