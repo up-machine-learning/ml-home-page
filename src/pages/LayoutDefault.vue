@@ -27,7 +27,7 @@ main::before {
   transform: translate(-50%, -50%);
   width: 72%;
   height: 72%;
-  background: url("./src/assets/map_bg.svg");
+  background: url("@/assets/map_bg.svg");
   background-attachment: fixed;
   max-width: 80%;
   background-size: auto;

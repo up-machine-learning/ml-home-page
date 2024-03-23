@@ -104,8 +104,8 @@
       </div>
 
       <Paginator
-        :rows="10"
-        :totalRecords="120"
+        :rows="paginator.rows"
+        :totalRecords="paginator.pageCount"
         :rowsPerPageOptions="[10, 20, 30]"
         @page="onPage($event)"
       ></Paginator>
@@ -215,7 +215,7 @@ import {
   IReview,
 } from "@/models/interface/destination.interface";
 import { useSearchStore } from "@/stores/search.store";
-import { formatCurrency } from "@/utils/helper";
+import { convertToQuery, formatCurrency } from "@/utils/helper";
 import Avatar from "primevue/avatar";
 import Button from "primevue/button";
 import Card from "primevue/card";
@@ -277,14 +277,18 @@ const fetchData = async (query?: any) => {
       }
     );
 };
+
 const onSearch = async () => {
   if (searchForm.value && Object.keys(searchForm.value)?.length) {
-    const submit: any = {};
-    submit["name"] = searchForm.value.name;
-    submit["type"] = searchForm.value.type["value"];
-    await fetchData(submit);
+    const searchText = convertToQuery({
+      ...searchForm.value,
+      type: searchForm.value.type["value"],
+    });
+
+    await fetchData(searchText ? { search: searchText } : {});
   }
 };
+
 const onCardClick = (item: IReview) => {
   preview.value = true;
   selectedItem.value = item;

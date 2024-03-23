@@ -13,3 +13,10 @@ export const formatCurrency = (value?: number | string, currency = "USD") => {
     currency
   );
 };
+
+export const convertToQuery = (obj: Record<string, any>) => {
+  return Object.keys(obj)
+    .filter((key) => obj[key])
+    .map((key) => key + "=" + obj[key])
+    .join("&");
+};

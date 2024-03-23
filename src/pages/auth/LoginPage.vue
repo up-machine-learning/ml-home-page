@@ -64,11 +64,6 @@ const onLogin = async () => {
                 </div>
               </form>
               <br />
-              <p class="">
-                <a data-toggle="tab" @click="$router.push('/register')"
-                  >Sign Up</a
-                ></p
-              >
             </div>
           </div>
         </div>
@@ -88,7 +83,7 @@ const onLogin = async () => {
   box-shadow: 0px 10px 34px -15px rgba(0, 0, 0, 0.24);
 }
 .img {
-  background-image: url("./src/assets/img/login_side.jpg");
+  background-image: url("@/assets/img/login_side.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
