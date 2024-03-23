@@ -2,8 +2,8 @@ name: Production CICD
 
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - 'develop'
 
 jobs:
 
