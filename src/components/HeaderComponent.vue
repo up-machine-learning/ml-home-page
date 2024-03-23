@@ -2,14 +2,14 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
       <a class="navbar-brand" href="#">
-        <!-- <img
-          src="https://getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo.svg"
+        <img
+          src="http://www.ces-cam.org/wp-content/uploads/2021/05/UP-short-.png"
           alt=""
           width="30"
           height="24"
           class="d-inline-block align-text-top"
-        /> -->
-        UP ML
+        />
+        Smart Trip Sugguestion
       </a>
       <button
         class="navbar-toggler"
