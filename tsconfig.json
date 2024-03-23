@@ -25,11 +25,11 @@
       "webworker",
       "dom"
     ],
-    "types": [
-      "vitest/globals",
-      "puppeteer",
-      "node"
-    ],
+    // "types": [
+    //   "vitest/globals",
+    //   "puppeteer",
+    //   "node"
+    // ],
     "rootDir": ".",
     "paths": {
       "@/*": [
