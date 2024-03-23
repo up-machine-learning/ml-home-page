@@ -3,7 +3,7 @@
     <div class="container">
       <a class="navbar-brand" href="#">
         <img
-          src="http://www.ces-cam.org/wp-content/uploads/2021/05/UP-short-.png"
+          src="https://edurank.org/assets/img/uni-logos/university-of-puthisastra-logo.png"
           alt=""
           width="30"
           height="24"
