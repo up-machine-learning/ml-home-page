@@ -1,0 +1,10 @@
+version: '3.7'
+name: up-ml-backoffice-project
+
+services:
+  app:
+    image: ghcr.io/up-machine-learning/ml-home-page
+    container_name: up-ml-backoffice
+    restart: always
+    ports:
+      - '3009:80'
