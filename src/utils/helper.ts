@@ -7,11 +7,7 @@ export const camelToCapitalize = (text: String) => {
 
 export const formatCurrency = (value?: number | string, currency = "USD") => {
   if (!value) return "0.00 USD";
-  return (
-    value.toLocaleString("en-US", { style: "currency", currency }) +
-    " " +
-    currency
-  );
+  return value.toLocaleString("en-US", { style: "currency", currency });
 };
 
 export const convertToQuery = (obj: Record<string, any>) => {

@@ -282,7 +282,10 @@ const onSearch = async () => {
   if (searchForm.value && Object.keys(searchForm.value)?.length) {
     const searchText = convertToQuery({
       ...searchForm.value,
-      type: searchForm.value.type["value"],
+      type:
+        searchForm.value.type["value"] !== "all"
+          ? searchForm.value.type["value"]
+          : "",
     });
 
     await fetchData(searchText ? { search: searchText } : {});
