@@ -233,7 +233,7 @@ import { onMounted, ref } from "vue";
 const preview = ref(false);
 const searchResults = ref<IDestination[]>([]);
 const searchStore = useSearchStore();
-const selectedItem = ref<IReview>();
+const selectedItem = ref();
 const isLoading = ref(true);
 const paginator = ref({
   page: 1,
@@ -288,23 +288,6 @@ const onSearch = async () => {
 const onCardClick = (item: IReview) => {
   preview.value = true;
   selectedItem.value = item;
-};
-
-const predictSentiment = (sentiment: number) => {
-  if (sentiment >= 0.5)
-    return {
-      value: "Positive",
-      severity: "success",
-    };
-  if (sentiment <= -0.5)
-    return {
-      value: "Negative",
-      severity: "danger",
-    };
-  return {
-    value: "Neutral",
-    severity: "warning",
-  };
 };
 
 const responsiveOptions = ref([
